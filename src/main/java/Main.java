@@ -99,25 +99,37 @@ public class Main {
         // Set the clear color
         glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
 
-        boolean a_press;
+        glEnable(GL_TEXTURE_2D);
+        float[] vertices = new float[]{
+                -0.5f, 0.5f, 0,
+                0.5f, 0.5f, 0,
+                0.5f, -0.5f, 0,
+
+                0.5f, -0.5f, 0,
+                -0.5f, -0.5f, 0,
+                -0.5f, 0.5f, 0
+        };
+
+        float[] textureCoords = new float[]{
+                0, 0,
+                1, 0,
+                1, 1,
+
+                1, 1,
+                0, 1,
+                0, 0
+        };
+
+        Model model = new Model(vertices, textureCoords);
+        Texture texture = new Texture("./res/plasma.jpg");
 
         // Run the rendering loop until the user has attempted to close
         // the window or has pressed the ESCAPE key.
         while ( !glfwWindowShouldClose(window) ) {
-            a_press = glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS;
-
             glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT); // clear the framebuffer
 
-            glBegin(GL_QUADS);
-            glColor4f(a_press?0:1, a_press?1:0, 0, 1);
-            glVertex2f(-0.5f, 0.5f);
-            glColor4f(a_press?1:0, a_press?0:1, 0, 1);
-            glVertex2f(0.5f, 0.5f);
-            glColor4f(a_press?1:0, a_press?1:0, 1, 1);
-            glVertex2f(0.5f, -0.5f);
-            glColor4f(a_press?0:1, a_press?0:1, 1, 1);
-            glVertex2f(-0.5f, -0.5f);
-            glEnd();
+            texture.bind();
+            model.render();
 
             glfwSwapBuffers(window); // swap the color buffers
 
